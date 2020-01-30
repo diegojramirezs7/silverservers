@@ -1,0 +1,10 @@
+time
+wave
+azure.cognitiveservices.speech
+pyaudio
+http.client
+urllib 
+base64
+io
+json
+
