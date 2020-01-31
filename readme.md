@@ -82,7 +82,7 @@ apim-request-id: f1e617ad-2c77-4969-872b-2d41a571ce3c
 Date: Thu, 30 Jan 2020 23:47:59 GMT
 ```
 
-5. Get Operation Results (from Enroll and Identify)
+6. Get Operation Results (from Enroll and Identify)
 - path after endpoint: /spid/v1.0/operations/{operationId}?{params}
 - HTTP method: GET
 - body content-type: empty
@@ -106,9 +106,59 @@ Date: Thu, 30 Jan 2020 23:47:59 GMT
 ```
 ------------To Do-----------------------
 2. Create Enrollment
-- path after endpoint: /spid/v1.0/identificationProfiles/identificationProfileId/enroll
+- path after endpoint: /spid/v1.0/verificationProfiles/{verificationProfileId}/enroll?{params}
+- HTTP method: POST
+- body content-type: binary -- multipart/form-data
+- body content: binary represenation of file.wav, 15+ seconds. Send request 3 times. 
+- response format: empty body, data is in HTTP headers. 
+- response: the operation location gives the url where a subsequent HTTP request has to be made
+```json
+{"enrollmentStatus":"Enrolling","enrollmentsCount":1,"remainingEnrollments":2,"phrase":"be yourself everyone else is already taken"}
+```
+
+3. Get Profile
+- path after endpoint: /spid/v1.0/verificationProfiles/{verificationProfileId}?{params}
+- HTTP method: GET
+- body content-type: empty
+- body content: empty
+- response format: json
+- response: need to convert to ascii/utf first and then to json object
+```json
+{"verificationProfileId":"d7c62d70-632d-4e3d-af8b-8e5485f56dad","enrollmentsCount":3,"remainingEnrollmentsCount":0,"locale":"en-us","createdDateTime":"2020-01-31T00:12:36.560Z","lastActionDateTime":"2020-01-31T18:29:40.565Z","enrollmentStatus":"Enrolled"}
+```
+
+4. Get All Profiles
+- path after endpoint: /spid/v1.0/verificationProfiles?{params}
+- HTTP method: GET
+- body content-type: empty
+- body content: empty
+- response format: json
+- response: need to convert to ascii/utf first and then to json object
+```json
+[{"verificationProfileId":"d7c62d70-632d-4e3d-af8b-8e5485f56dad","enrollmentsCount":3,"remainingEnrollmentsCount":0,"locale":"en-us","createdDateTime":"2020-01-31T00:12:36.560Z","lastActionDateTime":"2020-01-31T18:29:40.565Z","enrollmentStatus":"Enrolled"}]
+```
+
+5. verify User
+- path after endpoint: /spid/v1.0/identify?identificationProfileIds={listOfProfileIds}&{params}
 - HTTP method: POST
 - body content-type: binary -- multipart/form-data
 - body content: binary represenation of file.wav, only 1 file of 30+ seconds
-- response format: empty body, data is in HTTP headers. 
-- response: the operation location gives the url where a subsequent HTTP request has to be made
+- response format: json
+- response: need to convert to ascii/utf first and then to json object
+```json
+{"confidence":"High","result":"Accept","phrase":"be yourself everyone else is already taken"}
+```
+
+6. Get All Supported Phrases
+- path after endpoint: /spid/v1.0/verificationPhrases?locale=en-us
+- HTTP method: GET
+- body content-type: empty
+- body content: empty
+- response format: json
+- response: need to convert to ascii/utf first and then to json object
+```json
+[{"phrase":"i am going to make him an offer he cannot refuse"},{"phrase":"houston we have had a problem"},{"phrase":"my voice is my passport verify me"},{"phrase":"apple juice tastes funny after toothpaste"},{"phrase":"you can get in without your password"},{"phrase":"you can activate security system now"},{"phrase":"my voice is stronger than passwords"},{"phrase":"my password is not your business"},{"phrase":"my name is unknown to you"},{"phrase":"be yourself everyone else is already taken"}]
+```
+
+
+
