@@ -25,8 +25,6 @@ The key and endpoint depend on subscription to Azure and the name of the created
 - body content: binary represenation of file.wav, only 1 file of 30+ seconds
 - response format: empty body, data is in HTTP headers. 
 - response: the operation location gives the url where a subsequent HTTP request has to be made
-
-sample response
 ```http
 Content-Length: 0
 Operation-Location: https://voice-recog-ss.cognitiveservices.azure.com/spid/v1.0/operations/d3ffd28f-751a-4b41-9def-3ba7eab43e7a
@@ -104,7 +102,7 @@ Date: Thu, 30 Jan 2020 23:47:59 GMT
 ```json
 {"verificationProfileId":"d7c62d70-632d-4e3d-af8b-8e5485f56dad"}
 ```
-------------To Do-----------------------
+
 2. Create Enrollment
 - path after endpoint: /spid/v1.0/verificationProfiles/{verificationProfileId}/enroll?{params}
 - HTTP method: POST
