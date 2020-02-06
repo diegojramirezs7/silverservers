@@ -1,3 +1,9 @@
+## Components
+#### Raspberry Pi Client
+#### Web Client -- admin website
+#### Server
+#### MySQL DB 
+
 ## Azure Cognitive Services
 
 #### 2 main services: Identification and verification
