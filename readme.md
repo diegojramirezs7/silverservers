@@ -1,8 +1,13 @@
 ## Components
-#### Raspberry Pi Client
-#### Web Client -- admin website
-#### Server
-#### MySQL DB 
+### Raspberry Pi Client
+#### 3 main services
+** 1. Speech-To-Text ** 
+** 2. Record and Save Audio File **
+** 3. Web Client that sends HTTP requests to Server **
+
+### Web Client -- admin website
+### Server
+### MySQL DB 
 
 ## Azure Cognitive Services
 
