@@ -2,10 +2,16 @@
 ### Raspberry Pi Client
 #### 3 main services
 1. **Speech-To-Text** 
+Constantly listening for audio through USB microphone. Python script running in "daemon" mode, converting detected audio to text. Certain commands would trigger actions like "register, identify, verify". This script should only run the speech-to-text method and have some if statements to detect if certain commands are detected. 
 2. **Record and Save Audio File**
+Python script to rercord a wav file and save it to the local directory. Should be custommizable to different durations, sample rates and chunk sizes. This script can be a simple method or a method within a file
 3. **Web Client that sends HTTP requests to Server**
+Python script that sends requests to the server running on silverservers for verification and identification. Each request would would contain the recorded .wav file, the keywords spoken and the command (identify, verify)
 
 ### Web Client -- admin website
+#### Website for user and group management
+
+
 ### Server
 ### MySQL DB 
 
@@ -168,6 +174,3 @@ Date: Thu, 30 Jan 2020 23:47:59 GMT
 ```json
 [{"phrase":"i am going to make him an offer he cannot refuse"},{"phrase":"houston we have had a problem"},{"phrase":"my voice is my passport verify me"},{"phrase":"apple juice tastes funny after toothpaste"},{"phrase":"you can get in without your password"},{"phrase":"you can activate security system now"},{"phrase":"my voice is stronger than passwords"},{"phrase":"my password is not your business"},{"phrase":"my name is unknown to you"},{"phrase":"be yourself everyone else is already taken"}]
 ```
-
-
-
