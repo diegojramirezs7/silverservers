@@ -1,6 +1,6 @@
 ## Components
 ### Raspberry Pi Client
-#### 3 main services
+#### main services
 1. **Speech-To-Text** 
 Constantly listening for audio through USB microphone. Python script running in "daemon" mode, converting detected audio to text. Certain commands would trigger actions like "register, identify, verify". This script should only run the speech-to-text method and have some if statements to detect if certain commands are detected. 
 2. **Record and Save Audio File**
@@ -9,7 +9,14 @@ Python script to rercord a wav file and save it to the local directory. Should b
 Python script that sends requests to the server running on silverservers for verification and identification. Each request would would contain the recorded .wav file, the keywords spoken and the command (identify, verify)
 
 ### Web Client -- admin website
-#### Website for user and group management
+#### main services
+1. Create, View, Update & Delete users
+Only through website forms. 
+2. Create, View, Update (add/remove users) & Delete groups
+Only through website forms.
+3. Enroll users for identification
+Website form + wav file ()
+4. Enroll users for verification
 
 
 ### Server

@@ -4,7 +4,7 @@ _endpoint = "voice-recog-ss.cognitiveservices.azure.com"
 _pkey = 'b30c8294acd244e2babe4e2d1451018c'
 
 class RequestHandler:
-    def __init__(self, subkey, endpoint):
+    def __init__(self, endpoint, subkey):
         self.subkey = subkey
         self.endpoint = endpoint
 
@@ -27,7 +27,7 @@ class RequestHandler:
             data = response.read()
             print(data)
             conn.close()
-            return response
+            return data
         except Exception as e:
             print("[Errno {0}] {1}".format(e.errno, e.strerror))
 
@@ -73,7 +73,7 @@ class RequestHandler:
             data = response.read()
             print(data)
             conn.close()
-            return response
+            return data
         except Exception as e:
             print("[Errno {0}] {1}".format(e.errno, e.strerror))
 
@@ -93,6 +93,7 @@ class RequestHandler:
             data = response.read()
             print(data)
             conn.close()
+            return data
         except Exception as e:
             print("[Errno {0}] {1}".format(e.errno, e.strerror))
 
@@ -143,11 +144,6 @@ class RequestHandler:
         except Exception as e:
             print(e)
 
-
-handler = RequestHandler(endpoint=_endpoint, subkey = _pkey)
-prid = "d7c62d70-632d-4e3d-af8b-8e5485f56dad"
-res = handler.get_supported_phrases()
-print(res.msg)
 
 
 

@@ -1,13 +1,11 @@
 import pyaudio
 import wave
 
-def record():
+def record(seconds, filename):
 	chunk = 1024  # Record in chunks of 1024 samples
 	sample_format = pyaudio.paInt16  # 16 bits per sample
 	channels = 1
 	fs = 16000  # Record at 44100 samples per second
-	seconds = 34
-	filename = "test.wav"
 
 	p = pyaudio.PyAudio()  # Create an interface to PortAudio
 
@@ -42,7 +40,7 @@ def record():
 	wf.setframerate(fs)
 	wf.writeframes(b''.join(frames))
 	wf.close()
+	print("file saved")
 
 if __name__ == "__main__":
-	record()
-
+	record(10, "identify.wav")

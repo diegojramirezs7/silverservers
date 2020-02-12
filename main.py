@@ -2,11 +2,18 @@ import azure.cognitiveservices.speech as speechsdk
 import time
 import wave
 import record
+import identification
 
 # Creates an instance of a speech config with specified subscription key and service region.
 # Replace with your own subscription key and service region (e.g., "westus").
 speech_key, service_region = "b9744c52527a4a14b36783371ac678de", "westus"
 speech_config = speechsdk.SpeechConfig(subscription=speech_key, region=service_region)
+
+
+_endpoint = "voice-recog-ss.cognitiveservices.azure.com"
+_subkey = 'b30c8294acd244e2babe4e2d1451018c'
+
+req_handler = identification.RequestHandler(_endpoint, _subkey)
 
 # Creates a recognizer with the given settings
 speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config)
@@ -27,11 +34,20 @@ def handler(evt):
 			speech_recognizer.stop_continuous_recognition()
 			time.sleep(3)
 			print(evt.result.text)
-			record.record()
+			record.record(30, "enroll.wav")
+			uid = enroll()
+			print(handler)
 			speech_recognizer.start_continuous_recognition()
-		elif evt.result.text.lower().strip(".") == "cup of wine":
+		elif evt.result.text.lower().strip(".") == "identify":
+			speech_recognizer.stop_continuous_recognition()
+			time.sleep(3)
 			print(evt.result.text)
-			print("executing the second command")
+			record.record(15, "identify.wav")
+			print("before calling identify function")
+			identify(uid)
+			print("after callin it")
+			speech_recognizer.start_continuous_recognition()
+
 	elif evt.result.reason == speechsdk.ResultReason.NoMatch:
 		print("No speech could be recognized, please try again")
 	elif evt.result.reason == speechsdk.ResultReason.Canceled:
@@ -39,8 +55,35 @@ def handler(evt):
 
 speech_recognizer.recognized.connect(handler)
 speech_recognizer.start_continuous_recognition()
-time.sleep(30)
+time.sleep(400)
 speech_recognizer.stop_continuous_recognition()
+
+def enroll():
+	data = req_handler.create_profile()
+	data_dictionary = req_handler.parse_results(data)
+	uid = resp_dictionary['identificationProfileId']
+	enrollment_resp = req_handler.enroll_user("enroll.wav",uid)
+	oid = get_oid(enrollment_resp)
+	enrollment_operation = req_handler.get_opertion(oid)
+	print(enrollment_operation)
+	return uid
+
+def identify(uid):
+	try:
+		print("enter identify function")
+		idetify_resp = req_handler.identify("identify.wav", uid)
+		oid = get_oid(identify_resp)
+		identify_operation = req_handler.get_opertion(oid)
+		print(identify_operation)
+	except:
+		print("error identifying")
+
+def get_oid(resp):
+	operation_url = resp.getheader('Operation-Location')
+	index = operation_url.index("operations/")
+	oid = operation_url[index + len("operations/"):]
+	return oid
+
 
 #result = speech_recognizer.recognize_once()
 
