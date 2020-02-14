@@ -216,7 +216,7 @@ Date: Thu, 30 Jan 2020 23:47:59 GMT
 ```
 
 ##### Identification
-**Identify individual from a group of registered users**
+Identify individual from a group of registered users
 1. Create Group
 - method: vi2.create_group("description")
 - specifications: groups are used to have different types of users
