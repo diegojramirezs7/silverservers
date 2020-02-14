@@ -30,7 +30,7 @@ Website form + wav file ()
 
 The key and endpoint depend on subscription to Azure and the name of the created resource in Azure. 
 
-#### Identification
+##### Identification
 1. Create Identification Profile: 
 - path after endpoint: /spid/v1.0/identificationProfiles
 - HTTP method: POST
@@ -114,7 +114,7 @@ Date: Thu, 30 Jan 2020 23:47:59 GMT
 {"status":"succeeded","createdDateTime":"2020-01-30T23:47:59.8780883Z","lastActionDateTime":"2020-01-30T23:48:01.9999543Z","processingResult":{"confidence":"High","identifiedProfileId":"7bd2514a-a19d-4404-95e1-a4488681245e"}}
 ```
 
-#### Verification
+##### Verification
 1. Create Verification Profile: 
 - path after endpoint: /spid/v1.0/verificationProfiles
 - HTTP method: POST
@@ -181,7 +181,9 @@ Date: Thu, 30 Jan 2020 23:47:59 GMT
 [{"phrase":"i am going to make him an offer he cannot refuse"},{"phrase":"houston we have had a problem"},{"phrase":"my voice is my passport verify me"},{"phrase":"apple juice tastes funny after toothpaste"},{"phrase":"you can get in without your password"},{"phrase":"you can activate security system now"},{"phrase":"my voice is stronger than passwords"},{"phrase":"my password is not your business"},{"phrase":"my name is unknown to you"},{"phrase":"be yourself everyone else is already taken"}]
 ```
 
-### VoiceIt
+#### VoiceIt
 
+##### Identification
+##### Verification
 
 ### MySQL DB 
