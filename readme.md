@@ -2,9 +2,10 @@
 ### Raspberry Pi Client
 #### main services
 1. **Speech-To-Text** 
-Constantly listening for audio through USB microphone. Python script running in "daemon" mode, converting detected audio to text. Certain commands would trigger actions like "register, identify, verify". This script should only run the speech-to-text method and have some if statements to detect if certain commands are detected. 
+Constantly listening for audio through USB microphone. Python script running in "daemon" mode, converting detected audio to text. Certain commands would trigger actions like "register, identify, verify". This script should only run the speech-to-text method and have some if statements to detect if certain commands are detected. The main python script running on the RPi. 
+It calls method record.py file and methods on requesthandler.py
 2. **Record and Save Audio File**
-Python script to rercord a wav file and save it to the local directory. Should be custommizable to different durations, sample rates and chunk sizes. This script can be a simple method or a method within a file
+Python script to rercord a wav file and save it to the local directory. Should be custommizable to different durations, sample rates, chunk sizes and filename. This script can be a simple method or a method within a file.
 3. **Web Client that sends HTTP requests to Server**
 Python script that sends requests to the server running on silverservers for verification and identification. Each request would would contain the recorded .wav file, the keywords spoken and the command (identify, verify)
 
@@ -20,11 +21,9 @@ Website form + wav file ()
 
 
 ### Server
-### MySQL DB 
 
-## Azure Cognitive Services
-
-#### 2 main services: Identification and verification
+#### Azure Cognitive Services
+**2 main services: Identification and verification**
 **accross all scripts, 2 common variables**
 - endpoint: https://voice-recog-ss.cognitiveservices.azure.com
 - subscription key: b30c8294acd244e2babe4e2d1451018c 
@@ -181,3 +180,8 @@ Date: Thu, 30 Jan 2020 23:47:59 GMT
 ```json
 [{"phrase":"i am going to make him an offer he cannot refuse"},{"phrase":"houston we have had a problem"},{"phrase":"my voice is my passport verify me"},{"phrase":"apple juice tastes funny after toothpaste"},{"phrase":"you can get in without your password"},{"phrase":"you can activate security system now"},{"phrase":"my voice is stronger than passwords"},{"phrase":"my password is not your business"},{"phrase":"my name is unknown to you"},{"phrase":"be yourself everyone else is already taken"}]
 ```
+
+### VoiceIt
+
+
+### MySQL DB 

@@ -31,22 +31,9 @@ def handler(evt):
 		result = evt.result.text.lower().strip(".")
 		print(result)
 		if result == "register":
-			speech_recognizer.stop_continuous_recognition()
-			time.sleep(3)
 			print(evt.result.text)
-			record.record(30, "enroll.wav")
-			uid = enroll()
-			print(handler)
-			speech_recognizer.start_continuous_recognition()
 		elif evt.result.text.lower().strip(".") == "identify":
-			speech_recognizer.stop_continuous_recognition()
-			time.sleep(3)
 			print(evt.result.text)
-			record.record(15, "identify.wav")
-			print("before calling identify function")
-			identify(uid)
-			print("after callin it")
-			speech_recognizer.start_continuous_recognition()
 
 	elif evt.result.reason == speechsdk.ResultReason.NoMatch:
 		print("No speech could be recognized, please try again")
@@ -83,7 +70,6 @@ def get_oid(resp):
 	index = operation_url.index("operations/")
 	oid = operation_url[index + len("operations/"):]
 	return oid
-
 
 #result = speech_recognizer.recognize_once()
 
