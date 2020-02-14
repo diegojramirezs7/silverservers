@@ -7,7 +7,7 @@ It calls method record.py file and methods on requesthandler.py
 2. **Record and Save Audio File**
 Python script to rercord a wav file and save it to the local directory. Should be custommizable to different durations, sample rates, chunk sizes and filename. This script can be a simple method or a method within a file.
 3. **Web Client that sends HTTP requests to Server**
-Python script that sends requests to the server running on silverservers for verification and identification. Each request would would contain the recorded .wav file, the keywords spoken and the command (identify, verify)
+Python script that sends requests to the server running on silverservers for verification and identification. Each request would would contain the recorded .wav file, the keywords spoken and the command (identify, verify, enroll?)
 
 ### Web Client -- admin website
 #### main services
@@ -18,7 +18,6 @@ Only through website forms.
 3. Enroll users for identification
 Website form + wav file ()
 4. Enroll users for verification
-
 
 ### Server
 
@@ -182,8 +181,74 @@ Date: Thu, 30 Jan 2020 23:47:59 GMT
 ```
 
 #### VoiceIt
+**2 main services: Identification and verification**
+**accross all scripts, 2 common variables**
+- subscription key: "key_d79251d085214874b7479cdf67cd40b8"
+- token: "tok_3f628df367944320a359510086825836" 
+- need to create a VoiceIt2 object to which the key and token as passed as initialization arguments
+- all responses are in json format
+
+##### Common methods
+1. Create Profile
+- method: vi2.create_user()
+- specifications: this profile can be used for both identification and authentication
+- sample response: 
+```json
+{"createdAt": 1581662117000, "timeTaken": 0.016, "message": "Created user with userId : usr_e10fcfd25d3c43879a827495d4653293", "userId": "usr_e10fcfd25d3c43879a827495d4653293", "responseCode": "SUCC", "status": 201}
+```
+
+2. Get supported phrases
+- method: vi2.get_phrases("en-US")
+- specifications: one of the returned phrases has to be used for enrollment, verification and identification. 
+	- phrases can be added in the voiceit.io website
+- sample response:
+```json
+{"message": "Successfully got all en-CA phrases for account", "phrases": [{"text": "Never forget tomorrow is a new day", "contentLanguage": "en-CA"}, {"text": "Zoos are filled with large and small animals", "contentLanguage": "en-CA"}, {"text": "Remember to wash your hands before eating", "contentLanguage": "en-CA"}, {"text": "Today is a nice day to go for a walk", "contentLanguage": "en-CA"}], "count": 4, "responseCode": "SUCC", "timeTaken": "0.018s", "status": 200} 
+```
+
+3. Create Enrollment
+- method: vi2.create_voice_enrollment("userid", "en-US", "phrase", "absolute filepath")
+- specifications: record the user saying the phrase 3 times and send 3 different requests with their corresponding file
+	- the file has to be fixed length of 5 seconds (wav format)
+- sample response:
+```json
+{"textConfidence": 71.88, "createdAt": 1581663308000, "timeTaken": "1.298s", "contentLanguage": "en-US", "text": "Never forget tomorrow is a new day", "id": 453931, "message": "Successfully enrolled voice for user with userId : usr_e10fcfd25d3c43879a827495d4653293", "responseCode": "SUCC", "status": 201}
+```
 
 ##### Identification
-##### Verification
+**Identify individual from a group of registered users**
+1. Create Group
+- method: vi2.create_group("description")
+- specifications: groups are used to have different types of users
+- sample response: 
+```json
+{"createdAt": 1581665189000, "timeTaken": "0.025s", "groupId": "grp_450e14a5ff3748d0844246aac940de35", "description": "employees", "message": "Created group with groupId : grp_450e14a5ff3748d0844246aac940de35", "responseCode": "SUCC", "status": 201}
+```
 
-### MySQL DB 
+2. Add user to Group
+- method: vi2.add_user_to_group(groupId, userId)
+- specifications: can get group and user ids with _get_all_groups()_ _get_all_users()_
+- sample_response: 
+```json
+{"message": "Successfully added user with userId : usr_e10fcfd25d3c43879a827495d4653293 to group with groupId : grp_450e14a5ff3748d0844246aac940de35", "timeTaken": "0.041s", "responseCode": "SUCC", "status": 200}
+```
+
+3. Identify
+- method: vi2.voice_identification("groupId", "contentLanguage", "phrase", "absolute filepath")
+- specifications: 
+- sample response:
+```json
+{"timeTaken": "1.439s", "message": "Failed to identify voice for user in group with groupId : grp_450e14a5ff3748d0844246aac940de35, group does not have enough users with three (3) or more enrollments of the phrase 'Today is a nice day to go for a walk", "responseCode": "PNTE", "status": 400}
+```
+
+##### Verification
+1. verify
+- method: vi2.voice_verification("userId", "en-US", "phrase", "absolute filepath")
+- specifications: file has to be fixed length of 5 seconds
+- sample response:
+```json
+{"textConfidence": 59.85, "timeTaken": "2.977s", "confidence": 97.84, "text": "Never forget tomorrow is a new day", "message": "Successfully verified voice for user with userId : usr_e10fcfd25d3c43879a827495d4653293", "responseCode": "SUCC", "status": 200}
+```
+
+#### MySQL DB 
+
