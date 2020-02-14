@@ -3,9 +3,9 @@
 #### main services
 1. **Speech-To-Text** 
 Constantly listening for audio through USB microphone. Python script running in "daemon" mode, converting detected audio to text. Certain commands would trigger actions like "register, identify, verify". This script should only run the speech-to-text method and have some if statements to detect if certain commands are detected. The main python script running on the RPi. 
-It calls method record.py file and methods on requesthandler.py
+It calls method on the record.py file and methods on requesthandler.py
 2. **Record and Save Audio File**
-Python script to rercord a wav file and save it to the local directory. Should be custommizable to different durations, sample rates, chunk sizes and filename. This script can be a simple method or a method within a file.
+Python script to rercord a wav file and save it to the local directory. Should be customizable to different durations and filename. This script can be a simple method or a method within a file.
 3. **Web Client that sends HTTP requests to Server**
 Python script that sends requests to the server running on silverservers for verification and identification. Each request would would contain the recorded .wav file, the keywords spoken and the command (identify, verify, enroll?)
 
@@ -20,6 +20,9 @@ Website form + wav file ()
 4. Enroll users for verification
 
 ### Server
+
+#### Python application that implements Flask (web framework)
+This application is the main script attached to the server. It listens for the HTTP requests coming from the Raspberry Pi and the Website. It will act as the controller in the MVC architecture. Depending on the requests received from the client it will do the appropriate API calls and DB queries. Then, it will return the necessary information back to the client, depending on the type of UI. 
 
 #### Azure Cognitive Services
 **2 main services: Identification and verification**
@@ -199,8 +202,7 @@ Date: Thu, 30 Jan 2020 23:47:59 GMT
 
 2. Get supported phrases
 - method: vi2.get_phrases("en-US")
-- specifications: one of the returned phrases has to be used for enrollment, verification and identification. 
-	- phrases can be added in the voiceit.io website
+- specifications: one of the returned phrases has to be used for enrollment, verification and identification. Phrases can be added in the voiceit.io website
 - sample response:
 ```json
 {"message": "Successfully got all en-CA phrases for account", "phrases": [{"text": "Never forget tomorrow is a new day", "contentLanguage": "en-CA"}, {"text": "Zoos are filled with large and small animals", "contentLanguage": "en-CA"}, {"text": "Remember to wash your hands before eating", "contentLanguage": "en-CA"}, {"text": "Today is a nice day to go for a walk", "contentLanguage": "en-CA"}], "count": 4, "responseCode": "SUCC", "timeTaken": "0.018s", "status": 200} 
@@ -208,8 +210,7 @@ Date: Thu, 30 Jan 2020 23:47:59 GMT
 
 3. Create Enrollment
 - method: vi2.create_voice_enrollment("userid", "en-US", "phrase", "absolute filepath")
-- specifications: record the user saying the phrase 3 times and send 3 different requests with their corresponding file
-	- the file has to be fixed length of 5 seconds (wav format)
+- specifications: record the user saying the phrase 3 times and send 3 different requests with their corresponding file. The file has to be fixed length of 5 seconds (wav format)
 - sample response:
 ```json
 {"textConfidence": 71.88, "createdAt": 1581663308000, "timeTaken": "1.298s", "contentLanguage": "en-US", "text": "Never forget tomorrow is a new day", "id": 453931, "message": "Successfully enrolled voice for user with userId : usr_e10fcfd25d3c43879a827495d4653293", "responseCode": "SUCC", "status": 201}
@@ -235,7 +236,7 @@ Identify individual from a group of registered users
 
 3. Identify
 - method: vi2.voice_identification("groupId", "contentLanguage", "phrase", "absolute filepath")
-- specifications: 
+- specifications: there needs to be at least 2 users with 3 enrollments each using the same phrase. 
 - sample response:
 ```json
 {"timeTaken": "1.439s", "message": "Failed to identify voice for user in group with groupId : grp_450e14a5ff3748d0844246aac940de35, group does not have enough users with three (3) or more enrollments of the phrase 'Today is a nice day to go for a walk", "responseCode": "PNTE", "status": 400}
@@ -250,5 +251,12 @@ Identify individual from a group of registered users
 {"textConfidence": 59.85, "timeTaken": "2.977s", "confidence": 97.84, "text": "Never forget tomorrow is a new day", "message": "Successfully verified voice for user with userId : usr_e10fcfd25d3c43879a827495d4653293", "responseCode": "SUCC", "status": 200}
 ```
 
-#### MySQL DB 
+#### MySQL DB
+1. Tables
+- user(azure_verification_id, azure_identification_id, voiceit_id)
+
+
+
+
+
 
