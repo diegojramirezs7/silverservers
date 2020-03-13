@@ -83,7 +83,19 @@ class Model:
         except Exception as e:
             return str(e)
 
-model = Model("localhost", 'admin', 'silverserver2020', 'voiceauth')
+    def remove_user_from_group(self, userId, groupId=1):
+        try:
+            result = self.get_user(userId)
+            uid = result[0]
+            sql = "DELETE FROM user_groups WHERE user_id = %s"
+            values = (uid, )
+            self.cursor.execute(sql, values)
+            self.db.commit()
+            return "success"
+        except Exception as e:
+            return str(e)
+
+#model = Model("localhost", 'admin', 'silverserver2020', 'voiceauth')
 #r1 = model.create_group(name = "general", voiceit_id = 'grp_bc595294f94341568dc66dd7a09790bc')
 #r1 = model.get_user()
 #print(r1)
@@ -92,14 +104,14 @@ model = Model("localhost", 'admin', 'silverserver2020', 'voiceauth')
 
 #r = model.delete_user("usr_1dd5ce96a0bd42a5990145384aa49ec4")
 
-mydb = mysql.connector.connect(
-    host="localhost",
-    user="admin",
-    passwd="silverserver2020",
-    database = 'voiceauth'
-)
+# mydb = mysql.connector.connect(
+#     host="localhost",
+#     user="admin",
+#     passwd="silverserver2020",
+#     database = 'voiceauth'
+# )
 
-cursor = mydb.cursor()
+# cursor = mydb.cursor()
 
 #mysql: silverservers2020
 
@@ -142,6 +154,6 @@ cursor = mydb.cursor()
 # )
 # """
 # 
-cursor.execute("select * from user_groups")
-r = cursor.fetchall()
-print(r)
+# cursor.execute("select * from user_groups")
+# r = cursor.fetchall()
+# print(r)

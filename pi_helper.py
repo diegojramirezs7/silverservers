@@ -6,7 +6,7 @@ import speech_recognition as sr
 from text_to_speech import tts
 import os
 
-model = Model("localhost", 'root', 'Mysql_pw1?', 'silverservers')
+model = Model("localhost", 'admin', 'silverserver2020?', 'voiceauth')
 voiceit = VoiceitHandler("key_d79251d085214874b7479cdf67cd40b8", "tok_3f628df367944320a359510086825836")
 r = sr.Recognizer()
 m = sr.Microphone()
@@ -102,17 +102,33 @@ def voiceit_verification(groupId):
             os.system('mpg321 ttsfiles/response.mp3')
             verification_response = voiceit.verify(uid, phrase, 'verify.wav')
             if verification_response['responseCode'] == 'SUCC':
-                print(reverification_responsesp)
+                print(verification_responses)
                 confidence = verification_response['confidence']
                 st = "successfully verified user with confidence: {0}".format(confidence) 
                 tts(st, 'response')
             else:
-                st = reverification_responsesp['message']
+                msg = verification_response['message']
+                if 'grp_' in msg:
+                    position = msg.index("grp_")
+                    gid = msg[position: position+36]
+                    st = msg.replace(gid, "")
+                else:
+                    st = msg
+
+                tts(st, 'response')
 
             os.system('mpg321 ttsfiles/response.mp3')
         else:
-            s = identification_response['message']
-            tts()
+            msg = identification_response['message']
+            if 'grp_' in msg:
+                position = msg.index("grp_")
+                gid = msg[position: position+36]
+                st = msg.replace(gid, "")
+            else:
+                st = msg
+
+            tts(st, 'response')
+            os.system('mpg321 ttsfiles/response.mp3')
     except Exception as e:
         return str(e)
 
@@ -126,7 +142,6 @@ def file_to_text(filename):
         return s
     except Exception as e:
         return str(e)
-
 
 def pretty_list(ls):
     s = ""
