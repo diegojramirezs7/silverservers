@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, make_response, redirect, url_for
 app = Flask(__name__)
-from playsound import playsound
 from api_handler import AzureHandler, VoiceitHandler
 import json
 import speech_recognition as sr
@@ -124,7 +123,8 @@ def start_voiceit_registration():
 		model.save_user(name = name, voiceit_id = voiceit_userId)
     	model.add_user_to_group(voiceit_userId, groupId = 1)
 
-		return resp_dic
+    	response_dic_string = json.dumps(resp_dic)
+		return response_dic_string
 	except Exception as e:
 		return "Error: {0}".format(e)
 
@@ -158,7 +158,9 @@ def voiceit_enrollment():
 					'responseCode': res['responseCode'],
 					'message': st
 				}
-			return response_dic
+
+			response_dic_string = json.dumps(response_dic)
+			return response_dic_string
 		else:
 			return "Invalid HTTP method"
 	except Exception as e:
@@ -197,6 +199,7 @@ def voiceit_identify():
 					'username': name,
 					'confidence': confidence
 				}
+
 				return response_dic
 			else:
 				message = identification_response.get('message')
@@ -205,7 +208,8 @@ def voiceit_identify():
 					'responseCode': responseCode,
 					'message': clean_message,
 				}
-				return response_dic
+				response_dic_string = json.dumps(response_dic)
+				return response_dic_string
 		else:
 			return "Incorrect HTTP method"
 	except Exception as e:
@@ -236,7 +240,8 @@ def verify():
 					'message': clean_message,
 					'confidence': confidence,
 				}
-				return response_dic
+				response_dic_string = json.dumps(response_dic)
+				return response_dic_string
 			else:
 				message = verification_response.get('message')
 				clean_message = remove_id(message)
@@ -244,7 +249,8 @@ def verify():
 					'responseCode': responseCode,
 					'message': clean_message,
 				}
-				return response_dic
+				response_dic_string = json.dumps(response_dic)
+				return response_dic_string
 		else:
 			return "Incorrect HTTP method"
 	except Exception as e:
@@ -273,7 +279,8 @@ def start_azure_registration():
 			'azurePhrases': azure_phrases
 		}
 
-		return resp_dic
+		response_dic_string = json.dumps(response_dic)
+		return response_dic_string
 	except Exception as e:
 		return "Error: {0}".format(e)
 
